@@ -72,6 +72,13 @@ export function SiteProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     document.title = sections.meta.title
     document.querySelector('meta[name="description"]')?.setAttribute("content", sections.meta.description)
+    document.querySelector('meta[property="og:title"]')?.setAttribute("content", sections.meta.title)
+    document.querySelector('meta[property="og:description"]')?.setAttribute("content", sections.meta.description)
+    document.querySelector('meta[name="twitter:title"]')?.setAttribute("content", sections.meta.title)
+    document.querySelector('meta[name="twitter:description"]')?.setAttribute("content", sections.meta.description)
+    const imageUrl = `${window.location.origin}/og.jpg`
+    document.querySelector('meta[property="og:image"]')?.setAttribute("content", imageUrl)
+    document.querySelector('meta[name="twitter:image"]')?.setAttribute("content", imageUrl)
   }, [sections.meta])
 
   const value = useMemo(
