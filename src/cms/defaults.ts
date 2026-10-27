@@ -253,14 +253,7 @@ export const defaultSections = {
   teamHome: {
     tag: "Team",
     title: "The team on the phones",
-    items: [
-      { name: "Jay Benz", role: "Founder & CEO", image: "/jay-benz.jpg" },
-      { name: "Team member", role: "Job title", image: "" },
-      { name: "Team member", role: "Job title", image: "" },
-      { name: "Team member", role: "Job title", image: "" },
-      { name: "Team member", role: "Job title", image: "" },
-      { name: "Team member", role: "Job title", image: "" },
-    ],
+    items: team.slice(0, 6).map((member) => ({ ...member })),
   },
   articles: {
     pageTitle: "Simple notes on VICIdial and better calls",
