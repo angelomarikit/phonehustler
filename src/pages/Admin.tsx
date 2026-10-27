@@ -341,7 +341,9 @@ function Editor({ email }: { email: string }) {
       <InquiryList />
       {sqlOpen && (
         <div className="mb-6 rounded-[28px] bg-white p-5">
-          <p className="text-sm text-body">In Supabase, open the SQL Editor, paste this, and run it once. It creates the tables and loads every section, including the VICIdial dialer.</p>
+          <p className="text-sm text-body">
+            In Supabase, open the SQL Editor, paste this, and run it once. It creates the tables, the public <strong>media</strong> storage bucket for photo uploads, and loads every section.
+          </p>
           <textarea readOnly value={schemaSql} rows={8} className="mt-3 w-full rounded-xl border border-black/10 p-3 font-mono text-xs" />
           <button
             type="button"

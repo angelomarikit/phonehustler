@@ -3,7 +3,6 @@ import { Link } from "react-router-dom"
 import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from "framer-motion"
 import { useSite } from "../cms/SiteProvider"
 import { useInquiry } from "../components/InquiryModal"
-import { formatDate } from "../data/content"
 import { Button, CountUp, Dots, Faces, Icon, LineChart, Marquee, Reveal, SectionTag } from "../components/ui"
 
 function Chip({ label, dark = false }: { label: string; dark?: boolean }) {
@@ -26,7 +25,7 @@ export function HomePage() {
       <Process />
       <Testimonials />
       <Faq />
-      <Insights />
+      <TeamHome />
     </>
   )
 }
@@ -652,27 +651,42 @@ function Faq() {
   )
 }
 
-function Insights() {
-  const { sections } = useSite()
-  const insights = sections.insights
+function TeamPhoto({ name, image }: { name: string; image: string }) {
+  if (image) {
+    return <img src={image} alt={name} className="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
+  }
+  return (
+    <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-[linear-gradient(180deg,#e8f4fc_0%,#f3f5f7_100%)] text-mute">
+      <span className="grid h-14 w-14 place-items-center rounded-full bg-white text-brand">
+        <svg viewBox="0 0 24 24" className="h-7 w-7" fill="none" aria-hidden="true">
+          <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-7 9a7 7 0 0 1 14 0" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+        </svg>
+      </span>
+      <span className="text-xs font-medium">Photo coming soon</span>
+    </div>
+  )
+}
+
+function TeamHome() {
+  const teamHome = useSite().sections.teamHome
   return (
     <section className="mx-auto max-w-[1120px] px-4 py-16 md:px-6">
       <div className="grid items-center gap-6 md:grid-cols-[auto_1fr]">
-        <SectionTag>{insights.tag}</SectionTag>
-        <h2 className="text-center font-display text-4xl font-medium tracking-[-0.03em] md:text-5xl">{insights.title}</h2>
+        <SectionTag>{teamHome.tag}</SectionTag>
+        <h2 className="text-center font-display text-4xl font-medium tracking-[-0.03em] md:text-5xl">{teamHome.title}</h2>
       </div>
-      <div className="mt-10 grid gap-4 md:grid-cols-3">
-        {sections.articles.items.slice(0, 3).map((article, index) => (
-          <Reveal key={article.slug} delay={index * 0.06}>
-            <Link to={`/blog/${article.slug}`} className="group block overflow-hidden rounded-[28px] bg-white">
-              <div className="aspect-square overflow-hidden">
-                <img src={article.image} alt={article.alt} className="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
+      <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {teamHome.items.map((member, index) => (
+          <Reveal key={`${member.name}-${index}`} delay={index * 0.06}>
+            <article className="group overflow-hidden rounded-[28px] bg-white">
+              <div className="aspect-[4/5] overflow-hidden">
+                <TeamPhoto name={member.name} image={member.image} />
               </div>
               <div className="p-5">
-                <p className="text-sm text-mute">{formatDate(article.date)}</p>
-                <h3 className="mt-2 font-display text-2xl font-medium tracking-[-0.03em]">{article.title}</h3>
+                <h3 className="font-display text-2xl font-medium tracking-[-0.03em]">{member.name}</h3>
+                <p className="mt-1 text-sm text-mute">{member.role}</p>
               </div>
-            </Link>
+            </article>
           </Reveal>
         ))}
       </div>

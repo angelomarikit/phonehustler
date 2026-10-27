@@ -151,10 +151,7 @@ export function SectionFields({
     <div className="space-y-5">
       {Object.entries(data).map(([key, entry]) => (
         <div key={key}>
-          <div className="mb-1.5 flex items-center justify-between gap-3">
-            <p className="text-sm font-medium text-brand-deep">{labelFor(key)}</p>
-            {IMAGES.has(key) && typeof entry === "string" && <ImageUpload onUploaded={(url) => onChange({ ...data, [key]: url })} />}
-          </div>
+          <p className="mb-1.5 text-sm font-medium text-brand-deep">{labelFor(key)}</p>
           {LONG.has(key) && typeof entry === "string" ? (
             <textarea value={entry} rows={4} onChange={(event) => onChange({ ...data, [key]: event.target.value })} className={fieldClass} />
           ) : (
@@ -168,12 +165,7 @@ export function SectionFields({
 
 function FieldWithImages({ name, value, onChange }: { name: string; value: Json; onChange: (value: Json) => void }) {
   if (typeof value === "string" && IMAGES.has(name)) {
-    return (
-      <div className="space-y-2">
-        <input value={value} onChange={(event) => onChange(event.target.value)} className={fieldClass} />
-        {value && <img src={value} alt="" className="h-16 w-16 rounded-xl object-cover" />}
-      </div>
-    )
+    return <ImageField value={value} onChange={onChange} />
   }
   if (Array.isArray(value) || (value && typeof value === "object")) {
     return <NestedImages value={value} onChange={onChange} />
@@ -212,12 +204,7 @@ function NestedImages({ value, onChange }: { value: Json; onChange: (value: Json
       <div className="space-y-3">
         {Object.entries(value).map(([key, entry]) => (
           <div key={key}>
-            <div className="mb-1.5 flex items-center justify-between gap-3">
-              <p className="text-xs font-medium text-mute">{labelFor(key)}</p>
-              {IMAGES.has(key) && typeof entry === "string" && (
-                <ImageUpload onUploaded={(url) => onChange({ ...value, [key]: url })} />
-              )}
-            </div>
+            <p className="mb-1.5 text-xs font-medium text-mute">{labelFor(key)}</p>
             {LONG.has(key) && typeof entry === "string" ? (
               <textarea
                 value={entry}
@@ -226,10 +213,7 @@ function NestedImages({ value, onChange }: { value: Json; onChange: (value: Json
                 className={fieldClass}
               />
             ) : typeof entry === "string" && IMAGES.has(key) ? (
-              <div className="space-y-2">
-                <input value={entry} onChange={(event) => onChange({ ...value, [key]: event.target.value })} className={fieldClass} />
-                {entry && <img src={entry} alt="" className="h-16 rounded-xl object-cover" />}
-              </div>
+              <ImageField value={entry} onChange={(next) => onChange({ ...value, [key]: next })} />
             ) : (
               <LeafOrNest value={entry} onChange={(next) => onChange({ ...value, [key]: next })} />
             )}
@@ -246,6 +230,28 @@ function LeafOrNest({ value, onChange }: { value: Json; onChange: (value: Json) 
   return <Leaf value={value} onChange={onChange} />
 }
 
+function ImageField({ value, onChange }: { value: string; onChange: (value: string) => void }) {
+  return (
+    <div className="space-y-3 rounded-2xl border border-black/8 bg-paper p-3">
+      {value ? (
+        <img src={value} alt="" className="h-36 w-full max-w-[240px] rounded-xl object-cover" />
+      ) : (
+        <div className="flex h-36 max-w-[240px] flex-col items-center justify-center rounded-xl border border-dashed border-black/15 bg-white px-4 text-center text-xs text-mute">
+          Upload a photo. It saves to Supabase storage.
+        </div>
+      )}
+      <div className="flex flex-wrap items-center gap-2">
+        <ImageUpload onUploaded={onChange} />
+        {value && (
+          <button type="button" className="text-xs font-medium text-mute underline" onClick={() => onChange("")}>
+            Remove photo
+          </button>
+        )}
+      </div>
+    </div>
+  )
+}
+
 function ImageUpload({ onUploaded }: { onUploaded: (url: string) => void }) {
   const [busy, setBusy] = useState(false)
   const [note, setNote] = useState("")
@@ -259,8 +265,11 @@ function ImageUpload({ onUploaded }: { onUploaded: (url: string) => void }) {
     }
     setBusy(true)
     setNote("")
-    const path = `${Date.now()}-${file.name.replace(/[^\w.-]+/g, "-")}`
-    const { error } = await supabase.storage.from("media").upload(path, file)
+    const path = `uploads/${Date.now()}-${file.name.replace(/[^\w.-]+/g, "-")}`
+    const { error } = await supabase.storage.from("media").upload(path, file, {
+      cacheControl: "3600",
+      upsert: false,
+    })
     if (error) {
       setNote(error.message)
       setBusy(false)
@@ -272,15 +281,18 @@ function ImageUpload({ onUploaded }: { onUploaded: (url: string) => void }) {
   }
 
   return (
-    <span className="text-right">
-      <input
-        type="file"
-        accept="image/*"
-        disabled={busy}
-        onChange={(event) => void onFile(event.target.files?.[0])}
-        className="max-w-[180px] text-xs"
-      />
-      {note && <span className="mt-1 block text-xs text-red-600">{note}</span>}
-    </span>
+    <div>
+      <label className="inline-flex cursor-pointer items-center rounded-full bg-brand px-4 py-2 text-xs font-medium text-white transition hover:bg-brand-deep has-disabled:opacity-60">
+        {busy ? "Uploading…" : "Upload photo"}
+        <input
+          type="file"
+          accept="image/*"
+          disabled={busy}
+          onChange={(event) => void onFile(event.target.files?.[0])}
+          className="sr-only"
+        />
+      </label>
+      {note && <p className="mt-2 text-xs text-red-600">{note}</p>}
+    </div>
   )
 }

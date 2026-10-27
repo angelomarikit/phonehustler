@@ -35,7 +35,7 @@ export const sectionOrder = [
   "testimonials",
   "pricing",
   "faq",
-  "insights",
+  "teamHome",
   "articles",
   "aboutPage",
   "notFound",
@@ -58,7 +58,7 @@ export const sectionLabels: Record<SectionId, string> = {
   testimonials: "What companies say",
   pricing: "Pricing",
   faq: "Questions",
-  insights: "Home notes heading",
+  teamHome: "Home team",
   articles: "Articles",
   aboutPage: "About page",
   notFound: "Missing page",
@@ -250,9 +250,17 @@ export const defaultSections = {
     title: "Questions people ask first",
     items: faqs.map((item) => ({ ...item })),
   },
-  insights: {
-    tag: "Insights",
-    title: "Simple notes on VICIdial and better calls",
+  teamHome: {
+    tag: "Team",
+    title: "The team on the phones",
+    items: [
+      { name: "Jay Benz", role: "Founder & CEO", image: "/jay-benz.jpg" },
+      { name: "Team member", role: "Job title", image: "" },
+      { name: "Team member", role: "Job title", image: "" },
+      { name: "Team member", role: "Job title", image: "" },
+      { name: "Team member", role: "Job title", image: "" },
+      { name: "Team member", role: "Job title", image: "" },
+    ],
   },
   articles: {
     pageTitle: "Simple notes on VICIdial and better calls",

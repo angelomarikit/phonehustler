@@ -58,7 +58,11 @@ export function AboutPage() {
         <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {page.team.map((member, index) => (
             <Reveal key={member.name} delay={index * 0.04} className="overflow-hidden rounded-[28px] bg-white">
-              <img src={member.image} alt={member.name} className="aspect-[4/5] w-full object-cover" />
+              {member.image ? (
+                <img src={member.image} alt={member.name} className="aspect-[4/5] w-full object-cover" />
+              ) : (
+                <div className="flex aspect-[4/5] w-full items-center justify-center bg-paper text-sm text-mute">Photo coming soon</div>
+              )}
               <div className="p-5">
                 <p className="font-display text-2xl font-semibold tracking-[-0.03em]">{member.name}</p>
                 <p className="mt-1 text-sm text-mute">{member.role}</p>
