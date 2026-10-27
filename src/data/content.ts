@@ -59,21 +59,42 @@ export const solutions = [
 
 export const industries = [
   "Merchant Cash Advance",
-  "Business Loans",
   "Health Insurance",
+  "Business Insurance (General Liability & Workers Comp)",
   "Life Insurance",
   "Final Expense Insurance",
   "Auto Insurance",
   "Medical Alert",
-  "Reverse Mortgage",
   "Travel/Vacation",
   "Solar",
-  "Tax Settlement",
-  "Medicare Supplement",
-  "Home/Business Security",
-  "Pain Relief",
-  "Addiction Treatment",
-  "Walk In Tubs",
+  "Roofing",
+  "HVAC",
+  "Home Improvement",
+  "Plumbing",
+  "Medicare",
+] as const
+
+export const leadDeliveryOptions = [
+  {
+    title: "Text message directly to you?",
+    body: "Lead details sent to your phone by SMS—the name, number, and notes from the call.",
+    image: img("photo-1516321318423-f06f85e504b3", 1200),
+  },
+  {
+    title: "Transfer the call live to you?",
+    body: "We qualify the customer on the line, then transfer the live call to you or your sales team.",
+    image: img("photo-1556761175-5973dc0f32e7", 1200),
+  },
+  {
+    title: "Set a telephone callback appointment?",
+    body: "We schedule a time for you to call them back, or for them to expect your call.",
+    image: img("photo-1521791136064-7986c2920216", 1200),
+  },
+  {
+    title: "Set a sit-down appointment?",
+    body: "In-person or virtual sit-downs booked on your calendar with a confirmed date and time.",
+    image: img("photo-1504384308090-c894fdcc538d", 1200),
+  },
 ] as const
 
 export const process = [
@@ -110,21 +131,21 @@ export const testimonials = [
       "Our booked visits more than doubled. People finally understood the solar offer because someone explained it out loud.",
     name: "James Walker",
     role: "Owner, solar company",
-    image: img("photo-1500648767791-00dcc994a43e", 900),
+    image: img("photo-1560250097-0b93528c311a", 900),
   },
   {
-    quote: "",
+    quote:
+      "Same-day callbacks changed our pipeline. The scripts were clear and the appointments actually showed up.",
     name: "David Clarke",
     role: "Owner, Aone Insurance",
-    image: img("photo-1507003211169-0a1dd7228f2d", 1000),
-    video: true,
+    image: img("photo-1472099645785-5658abf4ff4e", 900),
   },
   {
     quote:
       "Within a few weeks we had a steady list of people ready to talk about a loan. The calls were clear and never pushy.",
     name: "Michael Turner",
     role: "Owner, business loans",
-    image: img("photo-1472099645785-5658abf4ff4e", 900),
+    image: img("photo-1519085360753-af0119f7cbe7", 900),
   },
 ]
 
@@ -140,12 +161,8 @@ export const pricingFeatures = [
 
 export const faqs = [
   {
-    q: "What is VICIdial?",
-    a: "It is our predictive dialer. It calls multiple numbers at once and puts a caller on the line only when someone answers.",
-  },
-  {
     q: "How many calls can one person make?",
-    a: "Hundreds in one shift. They are talking to people, not waiting through rings and busy signals.",
+    a: "A minimum of 800 calls per 8-hour shift.",
   },
   {
     q: "Do you only make phone calls?",
@@ -153,7 +170,7 @@ export const faqs = [
   },
   {
     q: "Who do you call for?",
-    a: "Companies in the industries on this site, like insurance, loans, solar, medical alert, and home services.",
+    a: "Companies in the industries on this site—insurance, MCA, solar, Medicare, medical alert, travel, and home services like roofing, HVAC, plumbing, and more.",
   },
   {
     q: "Do I need my own dialer or my own callers?",
@@ -166,7 +183,8 @@ export const faqs = [
 ]
 
 export const team = [
-  { name: "Jay Benz", role: "Founder & CEO", image: "/jay-benz.jpg" },
+  { name: "Jay Bendebel", role: "Founder & CEO", image: "/jay-benz.jpg" },
+  { name: "Paul Bacay", role: "Director of Operations", image: "/director-of-operations.jpg" },
   { name: "Sofia Bennett", role: "Head of the Calling Team", image: img("photo-1573496359142-b8d87734a5a2", 800) },
   { name: "Marcus Ellery", role: "Script Writer", image: img("photo-1519085360753-af0119f7cbe7", 800) },
   { name: "Elena Cross", role: "Call Quality Lead", image: img("photo-1580489944761-15a19d654956", 800) },
@@ -193,13 +211,13 @@ export type Article = {
 export const articles: Article[] = [
   {
     slug: "what-a-predictive-dialer-does",
-    title: "What VICIdial Does",
+    title: "How Our Predictive Dialer Works",
     date: "2026-03-02T23:00:00.000Z",
-    image: img("photo-1556761175-5973dc0f32e7", 1200),
-    alt: "A team on headsets",
+    image: "/filipino-call-center.jpg?v=1",
+    alt: "Phone Hustlers calling team on headsets",
     content: [
       "A normal phone wastes the shift. The caller waits through rings, busy signals, and voicemail.",
-      "VICIdial is a predictive dialer. It calls many numbers at the same time.",
+      "Our predictive dialer calls many numbers at the same time.",
       "A caller only hears a voice when a real person picks up.",
       "That is why one rep can make hundreds of calls in a single shift.",
       "More talk time means more people hear the offer, and more of them book the next step.",
@@ -209,8 +227,8 @@ export const articles: Article[] = [
     slug: "why-people-hang-up",
     title: "Why People Hang Up",
     date: "2026-02-11T23:00:00.000Z",
-    image: img("photo-1416879595882-3373a0480b5b", 1200),
-    alt: "Green Fern",
+    image: img("photo-1553877522-43269d4ea984", 1200),
+    alt: "Call center agents at work",
     content: [
       "People hang up when the first sentence is confusing.",
       "Say three things, then stop talking:",
@@ -223,13 +241,13 @@ export const articles: Article[] = [
     slug: "a-script-anyone-can-follow",
     title: "A Script Anyone Can Follow",
     date: "2026-02-04T23:00:00.000Z",
-    image: img("photo-1490750967868-88aa4486c946", 1200),
-    alt: "Yellow Flower",
+    image: img("photo-1556761175-5973dc0f32e7", 1200),
+    alt: "Team reviewing call scripts together",
     content: [
       "A good script is short.",
       "It has four parts:",
       "A greeting\n\nThe offer in one sentence\n\nTwo easy questions\n\nA way to book a time",
-      "We write a different script for each industry. A Medicare call should not sound like a walk-in tub call.",
+      "We write a different script for each industry. A Medicare call should not sound like a solar call.",
       "If a line feels stiff, we change it until a caller can say it out loud without reading.",
     ],
   },
@@ -237,8 +255,8 @@ export const articles: Article[] = [
     slug: "call-the-right-people",
     title: "Call the Right People",
     date: "2026-01-07T23:00:00.000Z",
-    image: img("photo-1501004318641-b39e6451bec6", 1200),
-    alt: "Orange Flower",
+    image: img("photo-1516321318423-f06f85e504b3", 1200),
+    alt: "Smartphone with lead notification from a call",
     content: [
       "A long call list is not a good call list.",
       "We only call people who might want the offer.",
@@ -251,8 +269,8 @@ export const articles: Article[] = [
     slug: "what-a-good-call-sounds-like",
     title: "What a Good Call Sounds Like",
     date: "2025-12-28T23:00:00.000Z",
-    image: img("photo-1468327768560-75b778cbb551", 1200),
-    alt: "Purple Flower",
+    image: img("photo-1573496359142-b8d87734a5a2", 1200),
+    alt: "Caller on a headset having a conversation",
     content: [
       "A good call is calm.",
       "Slow voice. Short sentences. No pushy words.",
@@ -265,8 +283,8 @@ export const articles: Article[] = [
     slug: "tell-the-company-the-truth",
     title: "Tell the Company the Truth",
     date: "2025-12-16T23:00:00.000Z",
-    image: img("photo-1496062031456-07b8f162a322", 1200),
-    alt: "Lilac Flower",
+    image: img("photo-1551288049-bebda4e38f71", 1200),
+    alt: "Weekly call results on a dashboard",
     content: [
       "Every week we share three numbers.",
       "How many people answered.\n\nHow many booked a time.\n\nHow many said no.",

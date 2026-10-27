@@ -1,17 +1,8 @@
 import { useEffect, useRef, useState } from "react"
-import { Link } from "react-router-dom"
 import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from "framer-motion"
 import { useSite } from "../cms/SiteProvider"
 import { useInquiry } from "../components/InquiryModal"
 import { Button, CountUp, Dots, Faces, Icon, LineChart, Marquee, Reveal, SectionTag } from "../components/ui"
-
-function Chip({ label, dark = false }: { label: string; dark?: boolean }) {
-  return (
-    <span className={`rounded-full px-3 py-1.5 text-xs font-medium whitespace-nowrap ${dark ? "bg-brand text-white" : "bg-white/80 text-brand-deep"}`}>
-      {label}
-    </span>
-  )
-}
 
 export function HomePage() {
   return (
@@ -19,7 +10,7 @@ export function HomePage() {
       <HeroStage />
       <Dialer />
       <Solution />
-      <Projects />
+      <LeadDelivery />
       <Why />
       <Services />
       <Process />
@@ -63,12 +54,20 @@ function HeroStage() {
           className="relative z-10 flex h-svh w-full flex-col items-start justify-end gap-8 px-5 pt-28 pb-16 md:flex-row md:items-end md:justify-between md:px-10 md:pb-20"
         >
           <div className="max-w-xl">
-            <h1 className="font-display text-[2.6rem] font-bold tracking-[-0.045em] text-balance text-white md:text-6xl md:leading-[1.02]">
+            {"kicker" in hero && hero.kicker ? (
+              <p className="text-[11px] font-semibold tracking-[0.28em] text-white/70 uppercase md:text-xs">{hero.kicker}</p>
+            ) : null}
+            <h1 className="mt-3 font-display text-[2.6rem] font-bold tracking-[-0.045em] text-balance text-white md:text-6xl md:leading-[1.02]">
               {hero.before}
               <span className="text-brand">{hero.accent}</span>
               {hero.after}
             </h1>
-            <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/75 md:text-[15px]">{hero.sub}</p>
+            {"lead" in hero && hero.lead ? (
+              <p className="mt-4 max-w-md text-base leading-snug font-medium text-white/90 md:text-lg">{hero.lead}</p>
+            ) : null}
+            {hero.sub ? (
+              <p className="mt-3 max-w-md text-sm leading-relaxed text-white/75 md:text-[15px]">{hero.sub}</p>
+            ) : null}
             <a href={`tel:${sections.site.phoneTel}`} className="mt-3 inline-block text-sm font-semibold text-white">
               {sections.site.phone}
             </a>
@@ -118,9 +117,14 @@ function AboutBlock() {
           <p className="text-sm text-mute">{about.trusted}</p>
           <p className="text-sm tracking-[0.2em] text-brand">{about.stars}</p>
         </div>
-        <p className="mt-8 font-display text-3xl font-medium tracking-[-0.03em] text-balance md:text-5xl md:leading-[1.15]">
-          {about.headline} <span className="text-ink/35">{about.fade}</span>
-        </p>
+        <div className="mt-8 space-y-4 text-balance">
+          <p className="font-display text-2xl font-medium leading-snug tracking-[-0.03em] md:text-4xl md:leading-[1.15]">
+            {about.headline}
+          </p>
+          {about.fade ? (
+            <p className="font-display text-xl font-medium tracking-[-0.02em] text-ink/45 md:text-3xl">{about.fade}</p>
+          ) : null}
+        </div>
         <div className="mt-8">
           <Button to={about.buttonTo} variant="ink">
             {about.button}
@@ -219,10 +223,16 @@ function Dialer() {
         <SectionTag>{dialer.tag}</SectionTag>
         <h2 className="mt-6 max-w-3xl font-display text-4xl font-medium tracking-[-0.03em] text-balance md:text-6xl md:leading-[1.05]">
           {dialer.title}
-          <span className="block text-ink/25">{dialer.fade}</span>
+          {dialer.fade ? <span className="block text-ink/50">{dialer.fade}</span> : null}
         </h2>
         <p className="mt-5 max-w-2xl text-base leading-relaxed text-body">{dialer.body}</p>
       </Reveal>
+
+      {"photo" in dialer && dialer.photo ? (
+        <Reveal className="mt-10 overflow-hidden rounded-[28px]">
+          <img src={dialer.photo as string} alt="" className="h-56 w-full object-cover object-[center_35%] md:h-72" />
+        </Reveal>
+      ) : null}
 
       <div className="mt-10 grid items-stretch gap-4 lg:grid-cols-[0.78fr_1.22fr]">
         <Reveal className="flex flex-col justify-between rounded-[28px] bg-white p-7 md:p-8">
@@ -248,7 +258,9 @@ function Dialer() {
               <img src="/logo-light.png?v=3" alt="Phone Hustlers" className="h-10 w-auto" />
               <p className="mt-8 text-sm font-medium tracking-[0.12em] text-brand uppercase">{dialer.kicker}</p>
               <h3 className="mt-2 font-display text-5xl font-semibold tracking-[-0.045em]">{dialer.name}</h3>
-              <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/75">{dialer.pitch}</p>
+              {dialer.pitch ? (
+                <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/75">{dialer.pitch}</p>
+              ) : null}
               <p className="mt-8 font-display text-5xl font-semibold tracking-[-0.045em] text-brand">{dialer.stat}</p>
               <p className="mt-1 max-w-[14rem] text-sm text-white/70">{dialer.statLabel}</p>
               <div className="mt-8">
@@ -261,8 +273,8 @@ function Dialer() {
               <LiveLines lines={dialer.lines} ringLabel={dialer.ringLabel} liveLabel={dialer.liveLabel} />
               <ul className="mt-5 space-y-2">
                 {dialer.points.map((point) => (
-                  <li key={point} className="flex items-center gap-2 text-sm text-white/80">
-                    <span className="h-1.5 w-1.5 rounded-full bg-brand" />
+                  <li key={point} className="flex items-start gap-2 text-sm leading-snug text-white/80">
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brand" aria-hidden="true" />
                     {point}
                   </li>
                 ))}
@@ -293,7 +305,7 @@ function Solution() {
         <SectionTag>{solution.tag}</SectionTag>
         <h2 className="mt-6 max-w-3xl font-display text-4xl font-medium tracking-[-0.03em] md:text-6xl md:leading-[1.05]">
           {solution.title}
-          <span className="block text-ink/25">{solution.fade}</span>
+          <span className="block text-ink/50">{solution.fade}</span>
         </h2>
       </Reveal>
       <div className="relative mt-10">
@@ -301,7 +313,7 @@ function Solution() {
           <img
             src={solution.photo}
             alt=""
-            className="h-[420px] w-full object-cover object-[center_30%] md:h-[480px]"
+            className="h-[420px] w-full object-cover object-[center_35%] md:h-[480px]"
           />
           <div className="absolute bottom-5 left-5 w-[min(100%-2.5rem,340px)] rounded-[22px] border border-white/25 bg-white/15 p-4 text-white backdrop-blur-md">
             <p className="text-sm font-medium">{solution.chart}</p>
@@ -326,40 +338,36 @@ function Solution() {
   )
 }
 
-function Projects() {
-  const { sections } = useSite()
-  const work = sections.workHome
-  const cases = sections.cases.items
+function LeadDelivery() {
+  const work = useSite().sections.workHome
+  const options = "options" in work && Array.isArray(work.options) ? work.options : []
+  const notes = "notes" in work && work.notes ? String(work.notes) : ""
   return (
-    <section className="mx-auto max-w-[1120px] px-4 py-16 md:px-6">
-      <div className="grid items-start gap-6 md:grid-cols-[auto_1fr_220px]">
+    <section id="leads" className="scroll-mt-28 mx-auto max-w-[1120px] px-4 py-16 md:px-6">
+      <Reveal className="max-w-3xl">
         <SectionTag>{work.tag}</SectionTag>
-        <div className="text-center">
-          <h2 className="font-display text-4xl font-medium tracking-[-0.03em] md:text-6xl">{work.title}</h2>
-          <p className="mt-2 text-sm text-mute">{work.range}</p>
-          <div className="mt-5">
-            <Button to={work.buttonTo} variant="ink">
-              {work.button}
-            </Button>
-          </div>
-        </div>
-        <p className="text-sm leading-relaxed text-body md:pt-3 md:text-right">{work.side}</p>
-      </div>
-      <div className="mt-12 grid gap-4 md:grid-cols-2">
-        {cases.map((item, index) => (
-          <Reveal key={item.slug} delay={index * 0.05}>
-            <Link to={`/case-studies/${item.slug}`} className="group block overflow-hidden rounded-[28px] bg-white">
-              <div className="relative aspect-[16/11] overflow-hidden">
-                <img src={item.image} alt="" className="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
-                <span className="absolute top-4 left-4 rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-ink backdrop-blur">
-                  {item.results[0].value} {item.results[0].label}
-                </span>
+        <h2 className="mt-6 font-display text-4xl font-medium tracking-[-0.03em] text-balance md:text-6xl">{work.title}</h2>
+        {notes ? <p className="mt-4 max-w-2xl text-sm leading-relaxed text-body md:text-base">{notes}</p> : null}
+        {"intro" in work && work.intro ? (
+          <p className="mt-6 font-display text-2xl font-medium tracking-[-0.03em] text-brand-deep md:text-3xl">{work.intro}</p>
+        ) : null}
+      </Reveal>
+      <div className="mt-12 grid gap-4 sm:grid-cols-2">
+        {options.map((item, index) => (
+          <Reveal key={item.title} delay={index * 0.05}>
+            <article className="overflow-hidden rounded-[28px] bg-white shadow-[0_8px_30px_rgba(2,26,63,0.06)]">
+              <div className="aspect-[16/10] overflow-hidden bg-paper">
+                {"image" in item && item.image ? (
+                  <img src={item.image} alt="" className="h-full w-full object-cover" />
+                ) : (
+                  <div className="flex h-full items-center justify-center text-sm text-mute">Image coming soon</div>
+                )}
               </div>
               <div className="p-6">
-                <p className="font-display text-2xl font-semibold tracking-[-0.04em]">{item.name}</p>
-                <p className="mt-2 text-sm leading-relaxed text-body">{item.teaser}</p>
+                <h3 className="font-display text-xl font-semibold tracking-[-0.03em] text-brand-deep">{item.title}</h3>
+                {item.body ? <p className="mt-2 text-sm leading-relaxed text-body">{item.body}</p> : null}
               </div>
-            </Link>
+            </article>
           </Reveal>
         ))}
       </div>
@@ -368,63 +376,27 @@ function Projects() {
 }
 
 function Why() {
-  const { sections } = useSite()
-  const why = sections.why
+  const why = useSite().sections.why
   const openInquiry = useInquiry()
+  const photo = "photoRight" in why && why.photoRight ? String(why.photoRight) : "/jay-bendebel.jpg?v=1"
   return (
-    <section className="mx-auto grid max-w-[1120px] gap-8 px-4 py-10 md:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:py-16">
+    <section className="mx-auto grid max-w-[1120px] gap-10 px-4 py-10 md:px-6 lg:grid-cols-[1fr_0.85fr] lg:items-start lg:py-16">
       <Reveal>
         <SectionTag>{why.tag}</SectionTag>
-        <h2 className="mt-5 max-w-md font-display text-4xl font-medium tracking-[-0.03em] text-balance md:text-5xl">{why.title}</h2>
-        <p className="mt-4 max-w-sm text-body">{why.body}</p>
+        <h2 className="mt-5 max-w-lg font-display text-4xl font-medium tracking-[-0.03em] text-balance md:text-5xl">{why.title}</h2>
+        {"subtitle" in why && why.subtitle ? (
+          <p className="mt-4 max-w-lg text-lg font-medium text-brand-deep">{why.subtitle}</p>
+        ) : null}
+        <p className="mt-5 max-w-lg whitespace-pre-line text-sm leading-relaxed text-body md:text-base">{why.body}</p>
         <div className="mt-8">
           <Button onClick={openInquiry} variant="ink">
             {why.button}
           </Button>
         </div>
       </Reveal>
-      <div className="grid gap-4 md:grid-cols-[0.85fr_1.15fr]">
-        <Reveal className="relative min-h-[460px] overflow-hidden rounded-[28px] bg-[linear-gradient(180deg,#1c486b_20%,#11304d_100%)] p-5 text-white">
-          <img
-            src={why.photoLeft}
-            alt=""
-            className="absolute inset-x-4 bottom-0 h-[78%] w-[calc(100%-2rem)] object-cover object-top"
-          />
-          <div className="relative rounded-2xl bg-black/20 p-4 backdrop-blur-sm">
-            <h3 className="font-display text-3xl font-semibold tracking-[-0.04em]">{why.cardTitle}</h3>
-            <p className="mt-2 text-sm text-white/80">{why.cardBody}</p>
-            <div className="mt-4 flex flex-wrap gap-2">
-              <Chip label={why.chipA} />
-              <Chip label={why.chipB} />
-            </div>
-          </div>
-        </Reveal>
-        <Reveal delay={0.08} className="relative flex min-h-[420px] flex-col justify-end overflow-hidden rounded-[28px]">
-          <img src={why.photoRight} alt="" className="absolute inset-0 h-full w-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/20 to-transparent" />
-          <div className="relative space-y-3 p-5 text-white">
-            <div className="overflow-hidden rounded-full bg-black/30 py-2 backdrop-blur">
-              <Marquee
-                items={why.rowA}
-                duration={18}
-                render={(label) => <Chip label={label} dark={label === why.highlightA} />}
-              />
-            </div>
-            <div className="overflow-hidden rounded-full bg-black/30 py-2 backdrop-blur">
-              <Marquee
-                items={why.rowB}
-                reverse
-                duration={18}
-                render={(label) => <Chip label={label} dark={label === why.highlightB} />}
-              />
-            </div>
-            <div className="pt-3">
-              <p className="font-display text-2xl font-semibold tracking-[-0.03em]">{why.rightTitle}</p>
-              <p className="mt-2 max-w-xs text-sm text-white/80">{why.rightBody}</p>
-            </div>
-          </div>
-        </Reveal>
-      </div>
+      <Reveal delay={0.06} className="relative min-h-[420px] overflow-hidden rounded-[28px] lg:min-h-[520px]">
+        <img src={photo} alt="Jay Bendebel" className="absolute inset-0 h-full w-full object-cover object-top" />
+      </Reveal>
     </section>
   )
 }
@@ -465,7 +437,25 @@ function IndustryIcon({ name }: { name: string }) {
       {name === "Tax Settlement" && (
         <path fill="currentColor" d="M14 6h16l8 8v26H14V6Zm14 2.5V16h7.5L28 8.5ZM18 22h12v3H18v-3Zm0 6h12v3H18v-3Zm0 6h8v3h-8v-3Z" />
       )}
-      {name === "Medicare Supplement" && <path fill="currentColor" d="M20 6h8v14h14v8H28v14h-8V28H6v-8h14V6Z" />}
+      {(name === "Medicare Supplement" || name === "Medicare") && (
+        <path fill="currentColor" d="M20 6h8v14h14v8H28v14h-8V28H6v-8h14V6Z" />
+      )}
+      {(name === "Business Insurance (GL & WC)" ||
+        name === "Business Insurance (General Liability & Workers Comp)") && (
+        <path fill="currentColor" d="M24 4 8 12v12c0 9 6.2 15.2 16 18 9.8-2.8 16-9 16-18V12L24 4Zm-2 10h4v8h-4v-8Zm-8 0h4v8h-4v-8Z" />
+      )}
+      {name === "Roofing" && (
+        <path fill="currentColor" d="M4 22 24 8l20 14v14H4V22Zm8 4h8v8h-8v-8Z" />
+      )}
+      {name === "HVAC" && (
+        <path fill="currentColor" d="M24 10a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 4a6 6 0 1 1 0 12 6 6 0 0 1 0-12Z" />
+      )}
+      {name === "Home Improvement" && (
+        <path fill="currentColor" d="M8 28 22 14l6 6-14 14H8v-6Zm20-16-4-4-8 8 4 4 8-8Z" />
+      )}
+      {name === "Plumbing" && (
+        <path fill="currentColor" d="M14 10h20v6H28v14h-6V16H14v-4ZM8 34h32v4H8v-4Z" />
+      )}
       {name === "Home/Business Security" && (
         <path fill="currentColor" d="M24 4 8 12v12c0 9 6.2 15.2 16 18 9.8-2.8 16-9 16-18V12L24 4Z" />
       )}
@@ -478,6 +468,31 @@ function IndustryIcon({ name }: { name: string }) {
       {name === "Walk In Tubs" && (
         <path fill="currentColor" d="M8 14h32v6H30v14a8 8 0 0 1-8 8h-4a8 8 0 0 1-8-8V20H8v-6Zm8 6v14a4 4 0 0 0 4 4h4a4 4 0 0 0 4-4V20H16Z" />
       )}
+      {![
+        "Merchant Cash Advance",
+        "Business Loans",
+        "Health Insurance",
+        "Life Insurance",
+        "Final Expense Insurance",
+        "Auto Insurance",
+        "Medical Alert",
+        "Reverse Mortgage",
+        "Travel/Vacation",
+        "Solar",
+        "Tax Settlement",
+        "Medicare Supplement",
+        "Medicare",
+        "Home/Business Security",
+        "Pain Relief",
+        "Addiction Treatment",
+        "Walk In Tubs",
+        "Business Insurance (GL & WC)",
+        "Business Insurance (General Liability & Workers Comp)",
+        "Roofing",
+        "HVAC",
+        "Home Improvement",
+        "Plumbing",
+      ].includes(name) && <circle cx="24" cy="24" r="10" fill="currentColor" opacity="0.35" />}
     </svg>
   )
 }
@@ -555,32 +570,16 @@ function Testimonials() {
       <div className="mt-10 grid gap-4 lg:grid-cols-3">
         {testimonials.items.map((item, index) => (
           <Reveal key={item.name} delay={index * 0.06}>
-            {item.video ? (
-              <article className="relative min-h-[430px] overflow-hidden rounded-[28px]">
-                <img src={item.image} alt="" className="absolute inset-0 h-full w-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-ink via-transparent to-transparent" />
-                <div className="absolute top-1/2 left-1/2 grid h-16 w-16 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-white/90">
-                  <svg viewBox="0 0 24 24" className="ml-1 h-6 w-6" fill="currentColor">
-                    <path d="M8 5v14l11-7L8 5Z" />
-                  </svg>
+            <article className="flex min-h-[320px] flex-col justify-between rounded-[28px] border border-black/[0.06] bg-white p-6 shadow-sm">
+              <p className="font-display text-xl leading-snug tracking-[-0.03em] text-brand-deep md:text-2xl">“{item.quote}”</p>
+              <div className="mt-8 flex items-center gap-3 border-t border-black/[0.06] pt-5">
+                <img src={item.image} alt="" className="h-11 w-11 rounded-full object-cover grayscale-[20%]" />
+                <div>
+                  <p className="font-medium text-brand-deep">{item.name}</p>
+                  <p className="text-sm text-mute">{item.role}</p>
                 </div>
-                <div className="absolute right-5 bottom-5 left-5 text-white">
-                  <p className="font-medium">{item.name}</p>
-                  <p className="text-sm text-white/75">{item.role}</p>
-                </div>
-              </article>
-            ) : (
-              <article className="flex min-h-[430px] flex-col justify-between rounded-[28px] bg-white p-6">
-                <p className="font-display text-2xl leading-snug tracking-[-0.03em]">“{item.quote}”</p>
-                <div className="mt-8 flex items-center gap-3">
-                  <img src={item.image} alt="" className="h-12 w-12 rounded-full object-cover" />
-                  <div>
-                    <p className="font-medium">{item.name}</p>
-                    <p className="text-sm text-mute">{item.role}</p>
-                  </div>
-                </div>
-              </article>
-            )}
+              </div>
+            </article>
           </Reveal>
         ))}
       </div>
@@ -645,7 +644,6 @@ function Faq() {
             )
           })}
         </div>
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-paper to-transparent" />
       </div>
     </section>
   )

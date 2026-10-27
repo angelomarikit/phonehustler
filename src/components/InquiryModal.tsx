@@ -24,8 +24,12 @@ export function InquiryProvider({ children }: { children: ReactNode }) {
 function InquiryModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { sections } = useSite()
   const site = sections.site
-  const hero = sections.hero
   const industries = sections.industries.items
+  const rawAside = "inquiryAside" in site ? String(site.inquiryAside) : ""
+  const inquiryAside =
+    /jay|benz|bendebel|founder|ceo at phone/i.test(rawAside) || rawAside.includes("Monday through")
+      ? "Contact us any time, 24/7"
+      : rawAside
   const formId = useId()
   const [name, setName] = useState("")
   const [phone, setPhone] = useState("")
@@ -151,8 +155,7 @@ function InquiryModal({ open, onClose }: { open: boolean; onClose: () => void })
                 {site.inquiryTitle}
               </p>
               <p className="mt-3 max-w-xs text-sm leading-relaxed text-white/75">{site.inquiryText}</p>
-              <p className="mt-6 text-sm text-white/60">{hero.name}</p>
-              <p className="text-xs text-white/45">{hero.role}</p>
+              {inquiryAside ? <p className="mt-4 text-sm font-medium text-white/90">{inquiryAside}</p> : null}
               <div className="mt-8 space-y-3 text-sm">
                 <a href={`tel:${site.phoneTel}`} className="flex items-center gap-3 rounded-2xl bg-white/10 px-4 py-3 transition hover:bg-white/15">
                   <span className="grid h-9 w-9 place-items-center rounded-full bg-brand text-white">
@@ -225,7 +228,13 @@ function InquiryModal({ open, onClose }: { open: boolean; onClose: () => void })
                   </div>
                   <label className="block text-xs font-medium text-mute">
                     What do you need?
-                    <textarea value={message} onChange={(event) => setMessage(event.target.value)} rows={4} className={`${field} mt-1.5 resize-none`} placeholder="Tell us the offer and who we should call." />
+                    <textarea
+                      value={message}
+                      onChange={(event) => setMessage(event.target.value)}
+                      rows={4}
+                      className={`${field} mt-1.5 resize-none`}
+                      placeholder="What you offer and what you want from our phone services."
+                    />
                   </label>
                   {error && <p className="text-sm text-red-600">{error}</p>}
                   <button type="submit" disabled={sending} className="mt-2 w-full rounded-full bg-brand py-3.5 text-sm font-medium text-white transition hover:bg-brand-deep disabled:opacity-60">

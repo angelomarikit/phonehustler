@@ -140,7 +140,7 @@ export function CtaBand() {
       <h2 className="mx-auto max-w-3xl font-display text-4xl font-semibold tracking-[-0.045em] text-balance text-ink md:text-6xl md:leading-[1.05]">
         {site.ctaTitle}
       </h2>
-      <p className="mx-auto mt-5 max-w-md text-body">{site.ctaBody}</p>
+      <p className="mx-auto mt-5 max-w-2xl whitespace-pre-line text-body leading-relaxed">{site.ctaBody}</p>
       <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
         <span className="text-sm text-mute">{site.ctaPeople}</span>
         <Faces images={sections.aboutHome.faces} size="sm" />

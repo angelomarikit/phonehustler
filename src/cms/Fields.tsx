@@ -20,6 +20,10 @@ const LONG = new Set([
   "description",
   "footerBlurb",
   "ctaBody",
+  "subtitle",
+  "intro",
+  "inquiryAside",
+  "lead",
   "message",
   "a",
   "cardBody",
@@ -27,6 +31,7 @@ const LONG = new Set([
   "teamBody",
   "pageIntro",
   "side",
+  "notes",
 ])
 
 const IMAGES = new Set(["image", "photo", "photoLeft", "photoRight", "videoImage", "quoteImage", "banner"])
@@ -68,6 +73,11 @@ const LABELS: Record<string, string> = {
   inquiryText: "Form text",
   inquiryButton: "Form button",
   inquiryThanks: "Thank you line",
+  inquiryAside: "Sidebar availability line",
+  subtitle: "Subtitle",
+  intro: "Section intro",
+  notes: "Special notes",
+  options: "Delivery options",
   menuOpen: "Menu label",
   menuClose: "Close label",
   exploreLabel: "Footer explore label",
@@ -76,6 +86,7 @@ const LABELS: Record<string, string> = {
   oldTitle: "Old way headline",
   oldPoints: "Old way points",
   kicker: "Small label",
+  lead: "Lead line under headline",
   pitch: "Short pitch",
   stat: "Big number",
   statLabel: "Number caption",
