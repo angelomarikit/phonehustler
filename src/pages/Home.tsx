@@ -379,6 +379,14 @@ function Why() {
   const why = useSite().sections.why
   const openInquiry = useInquiry()
   const photo = "photoRight" in why && why.photoRight ? String(why.photoRight) : "/jay-bendebel.jpg?v=1"
+  const signName =
+    "signName" in why && typeof why.signName === "string" && why.signName.trim()
+      ? why.signName.trim()
+      : "Jay Bendebel"
+  const signRole =
+    "signRole" in why && typeof why.signRole === "string" && why.signRole.trim()
+      ? why.signRole.trim()
+      : "Founder & CEO"
   return (
     <section className="mx-auto grid max-w-[1120px] gap-10 px-4 py-10 md:px-6 lg:grid-cols-[1fr_0.85fr] lg:items-start lg:py-16">
       <Reveal>
@@ -394,8 +402,14 @@ function Why() {
           </Button>
         </div>
       </Reveal>
-      <Reveal delay={0.06} className="relative min-h-[420px] overflow-hidden rounded-[28px] lg:min-h-[520px]">
-        <img src={photo} alt="Jay Bendebel" className="absolute inset-0 h-full w-full object-cover object-top" />
+      <Reveal delay={0.06}>
+        <div className="relative min-h-[420px] overflow-hidden rounded-[28px] lg:min-h-[520px]">
+          <img src={photo} alt={signName} className="absolute inset-0 h-full w-full object-cover object-top" />
+          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-brand-deep/95 via-brand-deep/75 to-transparent px-6 pt-20 pb-6 text-white">
+            <p className="font-display text-xl font-semibold tracking-[-0.02em]">{signName}</p>
+            <p className="mt-1 text-sm text-white/85">{signRole}</p>
+          </div>
+        </div>
       </Reveal>
     </section>
   )
@@ -568,20 +582,43 @@ function Testimonials() {
         <h2 className="mt-5 font-display text-4xl font-medium tracking-[-0.03em] md:text-6xl">{testimonials.title}</h2>
       </Reveal>
       <div className="mt-10 grid gap-4 lg:grid-cols-3">
-        {testimonials.items.map((item, index) => (
-          <Reveal key={item.name} delay={index * 0.06}>
-            <article className="flex min-h-[320px] flex-col justify-between rounded-[28px] border border-black/[0.06] bg-white p-6 shadow-sm">
-              <p className="font-display text-xl leading-snug tracking-[-0.03em] text-brand-deep md:text-2xl">“{item.quote}”</p>
-              <div className="mt-8 flex items-center gap-3 border-t border-black/[0.06] pt-5">
-                <img src={item.image} alt="" className="h-11 w-11 rounded-full object-cover grayscale-[20%]" />
-                <div>
-                  <p className="font-medium text-brand-deep">{item.name}</p>
-                  <p className="text-sm text-mute">{item.role}</p>
+        {testimonials.items.map((item, index) => {
+          const videoUrl = "videoUrl" in item && item.videoUrl ? String(item.videoUrl) : ""
+          return (
+            <Reveal key={`${item.name}-${index}`} delay={index * 0.06}>
+              <article className="flex min-h-[320px] flex-col justify-between rounded-[28px] border border-black/[0.06] bg-white p-6 shadow-sm">
+                {videoUrl ? (
+                  <div className="overflow-hidden rounded-2xl bg-black">
+                    <video
+                      src={videoUrl}
+                      controls
+                      playsInline
+                      preload="metadata"
+                      className="mx-auto max-h-[420px] w-full object-contain"
+                    />
+                  </div>
+                ) : (
+                  <p className="font-display text-xl leading-snug tracking-[-0.03em] text-brand-deep md:text-2xl">
+                    “{item.quote}”
+                  </p>
+                )}
+                <div className={`flex items-center gap-3 border-t border-black/[0.06] pt-5 ${videoUrl ? "mt-5" : "mt-8"}`}>
+                  {item.image ? (
+                    <img src={item.image} alt="" className="h-11 w-11 rounded-full object-cover grayscale-[20%]" />
+                  ) : (
+                    <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-brand/10 font-display text-sm font-semibold text-brand">
+                      {item.name.charAt(0)}
+                    </span>
+                  )}
+                  <div>
+                    <p className="font-medium text-brand-deep">{item.name}</p>
+                    {item.role ? <p className="text-sm text-mute">{item.role}</p> : null}
+                  </div>
                 </div>
-              </div>
-            </article>
-          </Reveal>
-        ))}
+              </article>
+            </Reveal>
+          )
+        })}
       </div>
     </section>
   )

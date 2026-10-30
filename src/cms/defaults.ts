@@ -207,6 +207,8 @@ export const defaultSections = {
     title: "Why Choose Phone Hustlers?",
     subtitle: "American Understanding with the Filipino Drive.",
     body: "My name is Jay, and I grew up in Atlanta, Georgia. Having lived in the United States, I understand American business culture firsthand. I know how businesses operate overseas, how customers communicate, and, most importantly, how they expect to be treated.\n\nWith over 15 years of experience in the BPO industry, I bring my American background and business knowledge together with the hard work and dedication of my team in the Philippines. To me, great customer service is more than just reading a script. It's about understanding people, building trust, and making sure every customer has a positive experience with your business.",
+    signName: "Jay Bendebel",
+    signRole: "Founder & CEO",
     button: "Book a Call",
     photoRight: "/jay-bendebel.jpg?v=1",
   },
@@ -233,6 +235,7 @@ export const defaultSections = {
       role: item.role,
       image: item.image,
       video: Boolean("video" in item && item.video),
+      videoUrl: "videoUrl" in item && typeof item.videoUrl === "string" ? item.videoUrl : "",
     })),
   },
   pricing: {

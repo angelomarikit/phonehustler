@@ -43,6 +43,19 @@ function patchStaleSections(sections: Sections): Sections {
     next = { ...next, why: defaultSections.why }
   }
 
+  const whySignName = next.why.signName?.trim()
+  const whySignRole = next.why.signRole?.trim()
+  if (!whySignName || !whySignRole) {
+    next = {
+      ...next,
+      why: {
+        ...next.why,
+        signName: whySignName || defaultSections.why.signName,
+        signRole: whySignRole || defaultSections.why.signRole,
+      },
+    }
+  }
+
   const industriesSection = next.industries
   const industryItems = industriesSection.items as readonly string[] | undefined
   const staleIndustryLabels = ["Reverse Mortgage", "Walk In Tubs", "Business Loans"]
@@ -63,7 +76,9 @@ function patchStaleSections(sections: Sections): Sections {
     workHome.options.some(
       (item) =>
         typeof item.image === "string" &&
-        (item.image.includes("1521737710484") || item.image.includes("filipino-call-center.jpg")),
+        (item.image.includes("1521737710484") ||
+          item.image.includes("filipino-call-center.jpg") ||
+          item.image.includes("unsplash.com")),
     )
   ) {
     next = { ...next, workHome: defaultSections.workHome }
@@ -175,6 +190,16 @@ function patchStaleSections(sections: Sections): Sections {
   }
   if (directorOps(next.aboutPage.team)) {
     next = { ...next, aboutPage: { ...next.aboutPage, team: defaultSections.aboutPage.team } }
+  }
+
+  const testimonialItems = next.testimonials.items
+  const johnConti = testimonialItems?.find((item) => item.name === "John Conti")
+  if (
+    testimonialItems?.some((item) => item.name === "David Clarke") ||
+    !testimonialItems?.some((item) => item.name === "John Conti" && "videoUrl" in item && item.videoUrl) ||
+    (johnConti && johnConti.role !== "Owner, Trade Show Collections")
+  ) {
+    next = { ...next, testimonials: defaultSections.testimonials }
   }
 
   return next

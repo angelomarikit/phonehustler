@@ -78,22 +78,22 @@ export const leadDeliveryOptions = [
   {
     title: "Text message directly to you?",
     body: "Lead details sent to your phone by SMS—the name, number, and notes from the call.",
-    image: img("photo-1516321318423-f06f85e504b3", 1200),
+    image: "/lead-delivery-sms.jpg?v=1",
   },
   {
     title: "Transfer the call live to you?",
     body: "We qualify the customer on the line, then transfer the live call to you or your sales team.",
-    image: img("photo-1556761175-5973dc0f32e7", 1200),
+    image: "/lead-delivery-live-transfer.jpg?v=1",
   },
   {
     title: "Set a telephone callback appointment?",
     body: "We schedule a time for you to call them back, or for them to expect your call.",
-    image: img("photo-1521791136064-7986c2920216", 1200),
+    image: "/lead-delivery-callback.jpg?v=1",
   },
   {
     title: "Set a sit-down appointment?",
     body: "In-person or virtual sit-downs booked on your calendar with a confirmed date and time.",
-    image: img("photo-1504384308090-c894fdcc538d", 1200),
+    image: "/lead-delivery-sit-down.jpg?v=1",
   },
 ] as const
 
@@ -134,11 +134,12 @@ export const testimonials = [
     image: img("photo-1560250097-0b93528c311a", 900),
   },
   {
-    quote:
-      "Same-day callbacks changed our pipeline. The scripts were clear and the appointments actually showed up.",
-    name: "David Clarke",
-    role: "Owner, Aone Insurance",
-    image: img("photo-1472099645785-5658abf4ff4e", 900),
+    quote: "",
+    name: "John Conti",
+    role: "Owner, Trade Show Collections",
+    image: "",
+    video: true,
+    videoUrl: "/testimonials-john-conti.mp4?v=1",
   },
   {
     quote:
