@@ -272,17 +272,20 @@ export const defaultSections = {
   },
   aboutPage: {
     title: "About us.",
-    intro: "Phone Hustlers is a call center. We use VICIdial, a predictive dialer, so each caller can make hundreds of calls in one shift.",
+    intro:
+      "Stop dialing one number at a time. Our automated calling system handles hundreds of calls per shift, helping you maximize your return on investment.",
     button: "Book a Call",
-    storyTag: "Our Story",
+    storyTag: "Why Choose Us",
     story:
-      "We started because people asked for help and nobody called them back. One phone at a time was too slow. VICIdial rings many numbers at once, and a caller talks only when a person picks up.",
+      "My name is Jay, and I grew up in Atlanta, Georgia. Having lived in the United States, I understand American business culture firsthand.",
     missionTag: "Our Mission",
-    missionTitle: "Our Mission",
-    mission: "Put your list on a predictive dialer. Every live answer should end with a booked time, a clear no, or a simple note.",
+    missionTitle: "Turn More Conversations Into Customers",
+    mission:
+      "Every call is an opportunity to grow your business. We focus on reaching the right people, building meaningful connections, and turning promising conversations into real opportunities.",
     teamTag: "Team",
     teamTitle: "The team on the phones",
-    teamBody: "The people who write the scripts, make the calls, and tell you what happened.",
+    teamBody:
+      "Every business is different. We take the time to understand your goals, reach the right audience, and create an approach that works for your business.",
     team: team.map((member) => ({ ...member })),
   },
   notFound: {

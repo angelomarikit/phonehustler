@@ -192,6 +192,14 @@ function patchStaleSections(sections: Sections): Sections {
     next = { ...next, aboutPage: { ...next.aboutPage, team: defaultSections.aboutPage.team } }
   }
 
+  if (
+    next.aboutPage.intro?.includes("VICIdial") ||
+    next.aboutPage.story?.includes("One phone at a time was too slow") ||
+    next.aboutPage.mission?.includes("Put your list on a predictive dialer")
+  ) {
+    next = { ...next, aboutPage: defaultSections.aboutPage }
+  }
+
   const testimonialItems = next.testimonials.items
   const johnConti = testimonialItems?.find((item) => item.name === "John Conti")
   if (

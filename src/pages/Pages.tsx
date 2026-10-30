@@ -8,13 +8,26 @@ export function AboutPage() {
   const { sections } = useSite()
   const page = sections.aboutPage
   const about = sections.aboutHome
+  const hero = sections.hero
+  const why = sections.why
+  const site = sections.site
+  const teamHome = sections.teamHome
   const openInquiry = useInquiry()
+  const signName = "signName" in why && why.signName ? String(why.signName) : ""
+  const signRole = "signRole" in why && why.signRole ? String(why.signRole) : ""
   return (
     <div className="px-4 pt-32 pb-20 md:px-6">
       <div className="mx-auto max-w-[1120px]">
         <Reveal>
-          <p className="font-display text-6xl font-bold tracking-[-0.05em] md:text-8xl">{page.title}</p>
-          <p className="mt-6 max-w-2xl text-lg text-body">{page.intro}</p>
+          <SectionTag>{about.tag}</SectionTag>
+          <p className="mt-5 font-display text-6xl font-bold tracking-[-0.05em] md:text-8xl">{page.title}</p>
+          {hero.lead ? <p className="mt-6 max-w-2xl text-lg font-medium text-brand-deep">{hero.lead}</p> : null}
+          <p className="mt-4 max-w-2xl text-lg leading-relaxed text-body">{about.headline}</p>
+          {about.fade ? (
+            <p className="mt-4 max-w-2xl font-display text-xl font-medium tracking-[-0.02em] text-ink/45 md:text-2xl">
+              {about.fade}
+            </p>
+          ) : null}
           <div className="mt-8">
             <Button onClick={openInquiry}>{page.button}</Button>
           </div>
@@ -25,10 +38,19 @@ export function AboutPage() {
       </div>
       <div className="mx-auto mt-16 grid max-w-[1120px] gap-10 lg:grid-cols-[0.8fr_1.2fr]">
         <Reveal>
-          <SectionTag>{page.storyTag}</SectionTag>
+          <SectionTag>{why.tag}</SectionTag>
+          {"subtitle" in why && why.subtitle ? (
+            <p className="mt-4 font-display text-xl font-medium text-brand-deep">{why.subtitle}</p>
+          ) : null}
         </Reveal>
         <Reveal>
-          <p className="font-display text-2xl leading-snug tracking-[-0.03em] md:text-3xl">{page.story}</p>
+          <p className="whitespace-pre-line font-display text-2xl leading-snug tracking-[-0.03em] md:text-3xl">{why.body}</p>
+          {signName ? (
+            <div className="mt-6">
+              <p className="font-display text-lg font-semibold text-brand-deep">{signName}</p>
+              {signRole ? <p className="text-sm text-mute">{signRole}</p> : null}
+            </div>
+          ) : null}
         </Reveal>
       </div>
       <div className="mx-auto mt-12 grid max-w-[1120px] gap-3 md:grid-cols-4">
@@ -43,21 +65,21 @@ export function AboutPage() {
       </div>
       <div className="mx-auto mt-20 max-w-[1120px] rounded-[32px] bg-ink p-8 text-white md:p-12">
         <SectionTag light>{page.missionTag}</SectionTag>
-        <h2 className="mt-5 font-display text-4xl font-medium tracking-[-0.03em] md:text-5xl">{page.missionTitle}</h2>
-        <p className="mt-4 max-w-2xl text-white/75">{page.mission}</p>
+        <h2 className="mt-5 font-display text-4xl font-medium tracking-[-0.03em] md:text-5xl">{site.ctaTitle}</h2>
+        <p className="mt-4 max-w-2xl whitespace-pre-line text-white/75">{site.ctaBody}</p>
       </div>
       <div className="mx-auto mt-20 max-w-[1120px]">
         <Reveal className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
-            <SectionTag>{page.teamTag}</SectionTag>
-            <h2 className="mt-5 font-display text-4xl font-medium tracking-[-0.03em] md:text-5xl">{page.teamTitle}</h2>
-            <p className="mt-3 max-w-xl text-body">{page.teamBody}</p>
+            <SectionTag>{teamHome.tag}</SectionTag>
+            <h2 className="mt-5 font-display text-4xl font-medium tracking-[-0.03em] md:text-5xl">{teamHome.title}</h2>
+            <p className="mt-3 max-w-xl text-body">{site.footerBlurb}</p>
           </div>
           <Faces images={about.faces} />
         </Reveal>
         <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {page.team.map((member, index) => (
-            <Reveal key={member.name} delay={index * 0.04} className="overflow-hidden rounded-[28px] bg-white">
+          {teamHome.items.map((member, index) => (
+            <Reveal key={`${member.name}-${index}`} delay={index * 0.04} className="overflow-hidden rounded-[28px] bg-white">
               {member.image ? (
                 <img src={member.image} alt={member.name} className="aspect-[4/5] w-full object-cover" />
               ) : (
